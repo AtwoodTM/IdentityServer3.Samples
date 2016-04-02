@@ -128,7 +128,7 @@ namespace IdentityServer3.Host.Config
                 },
 
                 /////////////////////////////////////////////////////////////
-                // JavaScript Implicit Client - Simple
+                // JavaScript Implicit Client - OAuth only
                 /////////////////////////////////////////////////////////////
                 new Client
                 {
@@ -151,6 +151,39 @@ namespace IdentityServer3.Host.Config
                     {
                         "http://localhost:37045/index.html",
                     },
+                },
+
+                /////////////////////////////////////////////////////////////
+                // JavaScript Implicit Client - Manual
+                /////////////////////////////////////////////////////////////
+                new Client
+                {
+                    ClientName = "JavaScript Implicit Client - Manual",
+                    ClientId = "js.manual",
+                    Flow = Flows.Implicit,
+
+                    AllowedScopes = new List<string>
+                    {
+                        "openid",
+                        "email",
+                        "read",
+                        "write"
+                    },
+
+                    ClientUri = "https://identityserver.io",
+
+                    RequireConsent = true,
+                    AllowRememberConsent = true,
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost:37046/index.html",
+                    },
+
+                    AllowedCorsOrigins = new List<string>
+                    {
+                        "http://localhost:37046"
+                    }
                 },
 
                 /////////////////////////////////////////////////////////////
@@ -277,6 +310,7 @@ namespace IdentityServer3.Host.Config
                     ClientName = "MVC OWIN Hybrid Client",
                     ClientId = "mvc.owin.hybrid",
                     Flow = Flows.Hybrid,
+                    AllowAccessTokensViaBrowser = false,
 
                     ClientSecrets = new List<Secret>
                     {
@@ -322,6 +356,7 @@ namespace IdentityServer3.Host.Config
                     ClientName = "MVC OWIN Implicit Client",
                     ClientId = "mvc.owin.implicit",
                     Flow = Flows.Implicit,
+                    AllowAccessTokensViaBrowser = false,
 
                     AllowedScopes = new List<string>
                     {
@@ -438,7 +473,36 @@ namespace IdentityServer3.Host.Config
 
                     AccessTokenType = AccessTokenType.Reference
                 },
-                
+
+                /////////////////////////////////////////////////////////////
+                // WPF Client with Hybrid Flow and PKCE and PoP
+                /////////////////////////////////////////////////////////////
+                new Client
+                {
+                    ClientName = "WPF Client with Hybrid Flow and PKCE and PoP",
+                    ClientId = "wpf.hybrid.pop",
+                    Flow = Flows.HybridWithProofKey,
+
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost/wpf.hybrid.pop"
+                    },
+
+                    AllowedScopes = new List<string>
+                    {
+                        StandardScopes.OpenId.Name,
+                        StandardScopes.Profile.Name,
+                        StandardScopes.OfflineAccess.Name,
+                        "read", "write"
+                    },
+
+                    AccessTokenType = AccessTokenType.Reference
+                },
 
                 /////////////////////////////////////////////////////////////
                 // UWP OIDC Client
